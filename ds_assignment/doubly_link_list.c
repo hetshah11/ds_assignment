@@ -19,6 +19,7 @@ void print(struct node*);
 struct node* Insert_first(int);
 struct node* Insert_last(int);
 struct node* Insert_ord(int);
+struct node* Insert_After(int,int);
 struct node* deletenode(int);
 //struct node* copy();
 void main()
@@ -28,12 +29,12 @@ void main()
 		// struct node* head = (struct node*) malloc(sizeof(struct node));
 		//head->data=50;
 		
-		int ch,x,a;
+		int ch,x,a,y;
 		
 		struct node* cop_rtn;
-		while(ch!=6)
+		while(ch!=7)
 		{
-			printf("Press 1 for add node at first\npress 2 for insert at last\nPress 4 for insert at order\nPress 4 for print\nPress 5 for delete\npress 6 for quit");
+			printf("Press 1 for add node at first\npress 2 for insert at last\nPress 3 for insert at order\nPress 4 for insert after any element\nPress 5 for print\nPress 6 for delete\npress 7 for quit\n");
 			scanf("%d",&ch);
 			switch(ch)
 				{
@@ -51,11 +52,16 @@ void main()
 						scanf("%d",&x);
 						Insert_ord(x);
 						break;
-					
-					case 4: print(first);
+					case 4: printf("Enter element to be inserted and element afer which to be inserted\n");
+						scanf("%d %d",&x,&y);
+						Insert_After(y,x);
 						break;
 
-					case 5: printf("Enter element to be deletedn\n");
+					
+					case 5: print(first);
+						break;
+
+					case 6: printf("Enter element to be deletedn\n");
 						scanf("%d",&a);
 						deletenode(a);
 						break;
@@ -241,6 +247,66 @@ struct node* Insert_last(int new_data)
 
 	
 }
+struct node* Insert_After(int y,int x)
+	{
+		struct node *new_node = (struct node*)malloc(sizeof(struct node));
+		new_node->data=x;
+		struct node* temp=first;
+		if(first==NULL)
+			{
+			Insert_first(x);
+			return first;
+			}
+		 if(first->rptr==NULL)
+			{
+			if(first->data==x)
+			{
+			Insert_last(x);
+			return first;
+			}
+				else
+			         {
+				  printf("Element not found\n");
+				  return first;
+				}
+			}
+		
+			
+
+				
+				while(temp!=NULL)
+					{
+						
+							if(temp->data==y)
+								{
+									if(temp!=last)
+									{
+									new_node->rptr=temp->rptr;
+									temp->rptr->lptr=new_node;
+									temp->rptr=new_node;
+									new_node->lptr=temp;
+									printf("Element %d inserted after %d",x,y);
+									return first;
+									}
+									else
+									{
+										new_node->rptr=NULL;
+										new_node->lptr=temp;
+										temp->rptr=new_node;
+										last=new_node;
+										printf("Element %d inserted after %d",x,y);
+										return first;
+									}
+									
+								}
+						temp=temp->rptr;
+					}
+					
+					
+						printf("Element not found\n");
+					
+			
+	}
 
 struct node* deletenode(int x)
 	{
